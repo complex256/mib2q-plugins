@@ -7,15 +7,18 @@ connected, dim otherwise). The SDK itself (api/runtime/adapter) lives in `mib2q-
 
 ## Build
 
-Point `mibsdk.repo` at an SDK checkout's `build/repo` (after `./gradlew publishLocal`, with
-`mibsdk.version` set to the version this repo's `mibsdk.plugin` asks for), then:
+`gradle.properties` leaves `mibsdk.repo` and `mibsdk.mibpkg` blank, so the repository carries no machine-specific
+paths. Pass them with `-P` (or set them in `~/.gradle/gradle.properties`):
 
 ```
-./gradlew :plugins:hello-menu:test
-./gradlew :plugins:tailscale-status:mibpkgPackage -Pmibsdk.mibpkg=/path/to/mibpkg
+./gradlew :plugins:hello-menu:test \
+  -Pmibsdk.repo=file:///path/to/mib2q-plugin-sdk/build/repo
+./gradlew :plugins:tailscale-status:mibpkgPackage \
+  -Pmibsdk.repo=file:///path/to/mib2q-plugin-sdk/build/repo \
+  -Pmibsdk.mibpkg=/path/to/mibpkg
 ```
 
-`mibsdk.mibpkg` in `gradle.properties` is the host mibpkg used by `mibpkgPackage`.
+The SDK checkout must be at the version this repo's `mibsdk.plugin` asks for, after `./gradlew publishLocal`.
 
 ## CI
 
