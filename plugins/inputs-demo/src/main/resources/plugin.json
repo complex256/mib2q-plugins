@@ -1,0 +1,1 @@
+{"id":"inputs-demo","name":"Inputs Demo","version":"1.0.0","author":"complex256","api":5,"main":"sample.inputsdemo.InputsDemoPlugin","permissions":["ui.slot.statusbar"],"icons":["plug-24"]}

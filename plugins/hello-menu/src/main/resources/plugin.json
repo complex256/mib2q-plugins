@@ -1,0 +1,1 @@
+{"id":"hello-menu","name":"Hello Menu","version":"1.4.0","author":"complex256","api":6,"main":"sample.hellomenu.HelloMenuPlugin","permissions":["ui.slot.carmenu","ui.slot.statusbar"],"icons":["hello","hello-20"]}

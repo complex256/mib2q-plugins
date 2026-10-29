@@ -1,0 +1,42 @@
+name: plugins
+on:
+  push:
+  pull_request:
+
+jobs:
+  plugins:
+    strategy:
+      fail-fast: false
+      matrix:
+        plugin: [bike-rack, hello-menu, inputs-demo, tailscale-status, carmqtt-status]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: complex256/mib2q-plugin-sdk
+          path: sdk
+          ref: feat/status-bar
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Publish the SDK locally
+        working-directory: sdk
+        run: ./gradlew publishLocal
+      - name: Host mibpkg
+        run: |
+          curl -fsSL -o mibpkg "$MIBSDK_MIBPKG_URL"
+          chmod +x mibpkg
+        env:
+          MIBSDK_MIBPKG_URL: ${{ vars.MIBSDK_MIBPKG_URL }}
+      - name: Test and package
+        run: >-
+          ./gradlew :plugins:${{ matrix.plugin }}:test :plugins:${{ matrix.plugin }}:mibpkgPackage
+          -Pmibsdk.repo=file://$GITHUB_WORKSPACE/sdk/build/repo
+          -Pmibsdk.mibpkg=$GITHUB_WORKSPACE/mibpkg
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.plugin }}
+          path: plugins/${{ matrix.plugin }}/build/mibsdk/*.mpk
+          if-no-files-found: error

@@ -1,0 +1,1 @@
+{"id":"tailscale-status","name":"Tailscale","version":"1.0.0","author":"complex256","api":6,"main":"sample.tailscalestatus.TailscaleStatusPlugin","permissions":["network","ui.slot.statusbar"],"icons":["tailscale-on","tailscale-off"]}

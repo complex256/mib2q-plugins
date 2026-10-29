@@ -1,0 +1,1 @@
+{"id":"carmqtt-status","name":"MQTT","version":"1.0.0","author":"complex256","api":6,"main":"sample.carmqttstatus.CarmqttStatusPlugin","permissions":["network","ui.slot.statusbar"],"icons":["mqtt-on","mqtt-off"]}
