@@ -11,7 +11,7 @@ tasks.register<Exec>("buildDaemon") {
     group = "native"
     description = "Cross-build carmqtt for QNX"
     workingDir(layout.projectDirectory)
-    commandLine("sh", "scripts/build.sh")
+    commandLine("bash", "scripts/build.sh")
     environment("QNX_IMAGE", qnxImage.get())
 }
 
@@ -21,7 +21,7 @@ tasks.register<Exec>("packageDaemon") {
     dependsOn("buildDaemon")
     workingDir(layout.projectDirectory)
     val out = layout.buildDirectory.dir("mpk").get().asFile
-    commandLine("sh", "scripts/package.sh", out.absolutePath)
+    commandLine("bash", "scripts/package.sh", out.absolutePath)
     doFirst {
         val path = mibpkg.orNull
             ?: throw GradleException("mibsdk.mibpkg is not set: pass -Pmibsdk.mibpkg=/path/to/mibpkg")

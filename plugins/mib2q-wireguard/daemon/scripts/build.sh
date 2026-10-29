@@ -31,8 +31,13 @@ export GOOS=qnx GOARCH=arm GOARM=7 CGO_ENABLED=0 GOTOOLCHAIN=local
 if [ -n "${QNX_GOROOT:-}" ]; then
     cd "$ROOT" && GOROOT=$QNX_GOROOT PATH=$QNX_GOROOT/bin:$PATH sh -c "$cmd"
 else
-    docker image inspect "$IMG" >/dev/null 2>&1 || {
-        echo "$IMG not built - in qnx65-armv7-toolchain: host-scripts/qnx-run.sh build 8.5-go" >&2; exit 1; }
+    if ! docker image inspect "$IMG" >/dev/null 2>&1; then
+        echo "pulling $IMG"
+        docker pull "$IMG" || {
+            echo "$IMG unavailable - build/publish it from qnx65-armv7-toolchain (host-scripts/qnx-run.sh build 8.5-go127) or docker login ghcr.io" >&2
+            exit 1
+        }
+    fi
     # Module cache in a named volume: fetched once, reused across builds.
     docker run --rm --platform=linux/amd64 -v "$ROOT":/src -w /src \
         -v mibwg-gomod:/root/go/pkg/mod \

@@ -107,6 +107,8 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GHCR_TOKEN }}
+      - name: Pull the QNX image
+        run: docker pull "${{ matrix.image }}"
       - name: Build and package
         run: >-
           ./gradlew :plugins:${{ matrix.project }}:buildDaemon :plugins:${{ matrix.project }}:packageDaemon
