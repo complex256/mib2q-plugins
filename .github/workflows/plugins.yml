@@ -4,11 +4,26 @@ on:
   pull_request:
 
 jobs:
-  plugins:
+  java:
     strategy:
       fail-fast: false
       matrix:
-        plugin: [bike-rack, hello-menu, inputs-demo, tailscale-status, carmqtt-status]
+        include:
+          - id: bike-rack
+            project: bike-rack
+            path: plugins/bike-rack
+          - id: hello-menu
+            project: hello-menu
+            path: plugins/hello-menu
+          - id: inputs-demo
+            project: inputs-demo
+            path: plugins/inputs-demo
+          - id: tailscale-status
+            project: mib2q-tailscale:plugin
+            path: plugins/mib2q-tailscale/plugin
+          - id: carmqtt-status
+            project: mib2q-carmqtt:plugin
+            path: plugins/mib2q-carmqtt/plugin
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -34,11 +49,70 @@ jobs:
           MIBSDK_MIBPKG_URL: ${{ vars.MIBSDK_MIBPKG_URL }}
       - name: Test and package
         run: >-
-          ./gradlew :plugins:${{ matrix.plugin }}:test :plugins:${{ matrix.plugin }}:mibpkgPackage
+          ./gradlew :plugins:${{ matrix.project }}:test :plugins:${{ matrix.project }}:mibpkgPackage
           -Pmibsdk.repo=file://$GITHUB_WORKSPACE/sdk/build/repo
           -Pmibsdk.mibpkg=$GITHUB_WORKSPACE/mibpkg
       - uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.plugin }}
-          path: plugins/${{ matrix.plugin }}/build/mibsdk/*.mpk
+          name: ${{ matrix.id }}
+          path: ${{ matrix.path }}/build/mibsdk/*.mpk
+          if-no-files-found: error
+
+  native:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - id: tailscale
+            project: mib2q-tailscale:daemon
+            path: plugins/mib2q-tailscale/daemon
+            image: ghcr.io/complex256/qnx65-armv7-toolchain:8.5-go127
+          - id: wireguard
+            project: mib2q-wireguard:daemon
+            path: plugins/mib2q-wireguard/daemon
+            image: ghcr.io/complex256/qnx65-armv7-toolchain:8.5-go127
+          - id: carmqtt
+            project: mib2q-carmqtt:daemon
+            path: plugins/mib2q-carmqtt/daemon
+            image: ghcr.io/complex256/qnx65-armv7-toolchain:8.5-rust
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          repository: complex256/mib2q-plugin-sdk
+          path: sdk
+          ref: main
+          token: ${{ secrets.SDK_REPO_TOKEN || github.token }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Publish the SDK locally
+        working-directory: sdk
+        run: ./gradlew publishLocal
+      - name: Host mibpkg
+        run: |
+          curl -fsSL -o mibpkg "$MIBSDK_MIBPKG_URL"
+          chmod +x mibpkg
+        env:
+          MIBSDK_MIBPKG_URL: ${{ vars.MIBSDK_MIBPKG_URL }}
+      - name: Log in to private GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GHCR_TOKEN }}
+      - name: Build and package
+        run: >-
+          ./gradlew :plugins:${{ matrix.project }}:buildDaemon :plugins:${{ matrix.project }}:packageDaemon
+          -Pmibsdk.repo=file://$GITHUB_WORKSPACE/sdk/build/repo
+          -Pmibsdk.mibpkg=$GITHUB_WORKSPACE/mibpkg
+        env:
+          QNX_GO_IMAGE: ${{ matrix.image }}
+          QNX_RUST_IMAGE: ${{ matrix.image }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.id }}
+          path: ${{ matrix.path }}/build/mpk/*.mpk
           if-no-files-found: error

@@ -1,0 +1,10 @@
+# Replaces the mibwg line in /mnt/system/etc/boot/startup.sh, inserted in
+# start_late_drivers() right after `    inetd > /dev/null 2>&1`.
+# Backup of the original: startup.sh.pre-mibwg in the same directory.
+#
+# Best effort by construction: a detached background subshell with no stdio,
+# so startup.sh continues immediately and a missing or failing tailscaled
+# changes nothing about the boot.
+
+    ## tailscaled autostart. Best effort only: detached, no stdio.
+    ( sleep 30; [ -x /mnt/app/root/tailscale/tailscale.sh ] && /mnt/app/root/tailscale/tailscale.sh start ) </dev/null >/dev/null 2>&1 &

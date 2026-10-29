@@ -1,0 +1,13 @@
+diff --git a/net/dns/manager_default.go b/net/dns/manager_default.go
+index b514a74..6a1dce9 100644
+--- a/net/dns/manager_default.go
++++ b/net/dns/manager_default.go
+@@ -1,7 +1,7 @@
+ // Copyright (c) Tailscale Inc & contributors
+ // SPDX-License-Identifier: BSD-3-Clause
+ 
+-//go:build (!linux || android) && !freebsd && !openbsd && !windows && !darwin && !illumos && !solaris && !plan9
++//go:build (!linux || android) && !qnx && !freebsd && !openbsd && !windows && !darwin && !illumos && !solaris && !plan9
+ 
+ package dns
+ 

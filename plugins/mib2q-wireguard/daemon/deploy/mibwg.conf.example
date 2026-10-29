@@ -1,0 +1,62 @@
+# mibwg configuration - copy to mibwg.conf next to mibwg on the unit.
+#
+# [Interface] and [Peer] are standard wg-quick syntax, so the server side is
+# an ordinary WireGuard peer. The other sections exist because the MHI2q's
+# network stack has no tun device: the tunnel ends inside mibwg, and traffic
+# reaches it through [Forward] (in) and [Proxy] (out).
+
+[Interface]
+# mibwg genkey > unit.key ; mibwg pubkey < unit.key   (or wg genkey/pubkey)
+PrivateKey = <unit private key>
+# The unit's address inside the tunnel.
+Address = 10.66.0.2/32
+# Resolver for names dialed through [Proxy]. Without it, names are resolved
+# by the unit's own resolver (outside the tunnel) and only the connection goes
+# through the tunnel.
+DNS = 10.66.0.1
+# 1420 suits most uplinks; drop to 1280 if a tethered phone's carrier fragments.
+MTU = 1420
+# netstack (default): the tunnel ends inside mibwg; reach it via [Forward] and
+#   [Proxy].
+# tun / gif: the kernel routes AllowedIPs into the tunnel, so every program on
+#   the unit uses it and sshd is reachable directly; [Forward] and [Proxy] are
+#   then optional. With AllowedIPs = 0.0.0.0/0 it's a full tunnel that fails
+#   open (goes direct) whenever the server is unreachable.
+#   tun  - interface tun9. Needs a tun cloner in io-pkt (`ifconfig -C`; the
+#          MHI2q has one). IPv4 only for now.
+#   gif  - interface gif9, IP-in-IP over lo0. Works on any io-pkt, IPv4+IPv6.
+#   See docs/gif-backend.md.
+# Backend = tun
+# Table = off    # tun/gif: bring the interface up but add no routes
+
+[Peer]
+# Your WireGuard server.
+PublicKey = <server public key>
+Endpoint = vpn.example.com:51820
+# What is reachable through the tunnel. With the netstack backend 0.0.0.0/0 is
+# harmless - only traffic sent via [Proxy] enters the tunnel. With
+# Backend = tun or gif these become kernel routes, and 0.0.0.0/0 is a FULL tunnel
+# for everything on the unit.
+AllowedIPs = 10.66.0.0/24
+# The unit sits behind carrier NAT; keepalives keep the path open so the
+# server can reach [Forward] services at any time.
+PersistentKeepalive = 25
+
+[Forward]
+# Remote access: expose unit services on the unit's tunnel address.
+#   TCP = <tunnel port>                  -> 127.0.0.1:<same port>
+#   TCP = <tunnel port> -> <host:port>
+TCP = 22                      # ssh to 10.66.0.2
+TCP = 2323 -> 127.0.0.1:23    # telnet as 10.66.0.2:2323
+# UDP = 5353 -> 127.0.0.1:53
+
+[Proxy]
+# Outbound: route traffic from the unit into the tunnel. Bind to 127.0.0.1 for
+# the unit only, or to the hotspot address (uap0) to offer it to Wi-Fi clients.
+SOCKS5 = 127.0.0.1:1080
+HTTP = 127.0.0.1:8118
+
+[Time]
+# The unit's RTC boots at 1970. WireGuard servers reject handshakes whose
+# timestamp is older than the last one seen, so set the clock via SNTP.
+NTP = pool.ntp.org, time.google.com

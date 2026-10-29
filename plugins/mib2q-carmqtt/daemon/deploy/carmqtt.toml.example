@@ -1,0 +1,48 @@
+# carmqtt configuration. Copy to deploy/carmqtt.toml (git-ignored), fill in
+# [mqtt], then deploy/install.sh uploads it to /mnt/app/root/carmqtt/.
+# Only [mqtt].host is required; everything else shows its default.
+
+[mqtt]
+host = "homeassistant.example.ts.net"   # broker's tailnet name or 100.x address
+port = 1883
+# username = "carmqtt"
+# password = "secret"
+client_id = "mib2q-carmqtt"
+keepalive_s = 30
+topic_prefix = "mib2q"
+discovery_prefix = "homeassistant"
+
+[device]
+name = "Audi"
+model = "MIB2 High"
+# vin = "WAUZZZ..."        # only needed if ExLAP can't supply it
+
+[log]
+level = "info"             # error | warn | info | debug | trace
+file = "/tmp/carmqtt.log"   # "-" = stderr
+max_bytes = 1048576
+
+[sources.exlap]
+enabled = true
+addr = "127.0.0.1:25010"
+user = "RSE_3-DE1400"      # one of the built-in ExLAP logins
+# password = "..."         # only for a user not built in
+priority = 10
+
+# UBX GPS source: reads the RCC's ublox GPS (ExLAP does not expose Nav_GeoPosition on
+# this unit) and emits `location` (lat/lon/heading/altitude). Needs QNX `on` + Qnet to
+# the RCC node. ExLAP must stay enabled too — carmqtt needs the VIN (device id) from it.
+[sources.ubx]
+enabled = true
+# command = "on"                               # streams raw UBX to stdout
+# args = ["-f", "rcc", "cat", "/dev/nav/gps"]  # run `cat` on the RCC node over Qnet
+priority = 20              # above exlap so GPS wins the location signal
+
+# Local status endpoint for the HMI plugin: 127.0.0.1 only, key=value lines, then close.
+[status]
+# port = 19851
+
+# Per-signal overrides (ids from src/catalog.rs):
+[signals]
+# "vehicle.speed" = { min_interval_s = 5, deadband = 1, max_interval_s = 900 }
+# "accel.lateral" = { enabled = true, min_interval_s = 1 }

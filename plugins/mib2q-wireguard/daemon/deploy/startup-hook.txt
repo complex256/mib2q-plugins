@@ -1,0 +1,11 @@
+# Inserted into /mnt/system/etc/boot/startup.sh, in start_late_drivers(),
+# directly after the line `    inetd > /dev/null 2>&1` (where sshd becomes
+# reachable). Backup of the original: startup.sh.pre-mibwg in the same dir.
+#
+# Best effort by construction: a detached background subshell with no stdio.
+# startup.sh continues immediately; a missing or failing mibwg changes nothing.
+# The 30 s delay keeps mibwg off the CPU while the HMI boots.
+
+    ## mibwg (WireGuard) autostart. Best effort only: a detached background
+    ## subshell with no stdio, so it can never block or fail this script.
+    ( sleep 30; [ -x /mnt/app/root/wireguard/mibwg.sh ] && /mnt/app/root/wireguard/mibwg.sh start ) </dev/null >/dev/null 2>&1 &

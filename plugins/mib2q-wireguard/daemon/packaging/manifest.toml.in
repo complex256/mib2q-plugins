@@ -1,0 +1,31 @@
+[package]
+name = "wireguard"
+version = "@VERSION@"
+description = "WireGuard tunnel for MIB2 High head units"
+
+[compat]
+units = ["MHI2Q"]
+
+[[file]]
+src = "bin/mibwg"
+mode = "755"
+
+[[file]]
+src = "bin/mibwg.sh"
+mode = "755"
+
+[[file]]
+src = "mibwg.conf.example"
+
+[[config]]
+path = "mibwg.conf"
+example = "mibwg.conf.example"
+required = true
+
+[[service]]
+name = "mibwg"
+exec = "@pkg/bin/mibwg.sh"
+args = ["serve", "@config/mibwg.conf"]
+restart = "always"
+after = ["internet"]
+after_timeout = "5m"

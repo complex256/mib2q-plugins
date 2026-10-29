@@ -1,0 +1,5 @@
+/build/
+# real configs carry private keys
+*.conf
+!deploy/*.conf.example
+*.key

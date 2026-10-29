@@ -1,0 +1,57 @@
+[package]
+name = "tailscale"
+version = "@VERSION@"
+description = "Tailscale node for MIB2 High head units"
+
+[compat]
+units = ["MHI2Q"]
+
+[[file]]
+src = "bin/tailscaled"
+mode = "755"
+
+[[file]]
+src = "bin/tailscale"
+mode = "755"
+
+[[file]]
+src = "bin/sntp"
+mode = "755"
+
+[[file]]
+src = "bin/tsstatus"
+mode = "755"
+
+[[file]]
+src = "bin/libtsclock.so"
+mode = "755"
+
+[[file]]
+src = "bin/tailscale.sh"
+mode = "755"
+
+[[file]]
+src = "authkey.example"
+
+[[file]]
+src = "accept-routes.example"
+
+[[config]]
+path = "authkey"
+example = "authkey.example"
+required = false
+
+[[config]]
+path = "accept-routes"
+example = "accept-routes.example"
+required = false
+
+[[service]]
+name = "tailscale"
+exec = "@pkg/bin/tailscale.sh"
+args = ["serve", "@config"]
+restart = "always"
+# The daemon retries its own uplink; wait for basic internet, but do not block
+# boot forever if the vehicle is offline.
+after = ["internet"]
+after_timeout = "5m"

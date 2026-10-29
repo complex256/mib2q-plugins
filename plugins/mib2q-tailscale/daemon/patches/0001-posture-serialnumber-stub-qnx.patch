@@ -1,0 +1,13 @@
+diff --git a/posture/serialnumber_stub.go b/posture/serialnumber_stub.go
+index 6df9b40..0a31e3b 100644
+--- a/posture/serialnumber_stub.go
++++ b/posture/serialnumber_stub.go
+@@ -6,7 +6,7 @@
+ // solaris: currently unsupported by go-smbios:
+ // https://github.com/digitalocean/go-smbios/pull/21
+ 
+-//go:build solaris || plan9 || js || wasm || tamago || aix || (darwin && !cgo && !ios)
++//go:build solaris || plan9 || js || wasm || tamago || aix || qnx || (darwin && !cgo && !ios)
+ 
+ package posture
+ 

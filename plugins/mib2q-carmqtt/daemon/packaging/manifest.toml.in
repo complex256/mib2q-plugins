@@ -1,0 +1,28 @@
+[package]
+name = "carmqtt"
+version = "@VERSION@"
+description = "Car status to Home Assistant over MQTT"
+
+[compat]
+units = ["MHI2Q"]
+
+[[file]]
+src = "bin/carmqtt"
+mode = "755"
+
+[[file]]
+src = "carmqtt.toml.example"
+
+[[config]]
+path = "carmqtt.toml"
+example = "carmqtt.toml.example"
+required = true
+
+[[service]]
+name = "carmqtt"
+exec = "@pkg/bin/carmqtt"
+args = ["--config", "@config/carmqtt.toml"]
+restart = "always"
+# Wait for the tailnet (the MQTT broker is reached over Tailscale); start anyway after 5 min.
+after = ["tailnet"]
+after_timeout = "5m"

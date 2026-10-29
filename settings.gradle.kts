@@ -3,8 +3,9 @@
 pluginManagement {
     repositories {
         val sdkRepo = providers.gradleProperty("mibsdk.repo").orNull?.takeIf { it.isNotBlank() }
-            ?: throw GradleException("mibsdk.repo is not set: put the URL of the mibsdk Maven repository in gradle.properties")
-        maven { url = uri(sdkRepo) }
+        if (sdkRepo != null) {
+            maven { url = uri(sdkRepo) }
+        }
         gradlePluginPortal()
     }
 }
@@ -12,8 +13,9 @@ pluginManagement {
 dependencyResolutionManagement {
     repositories {
         val sdkRepo = providers.gradleProperty("mibsdk.repo").orNull?.takeIf { it.isNotBlank() }
-            ?: throw GradleException("mibsdk.repo is not set: put the URL of the mibsdk Maven repository in gradle.properties")
-        maven { url = uri(sdkRepo) }
+        if (sdkRepo != null) {
+            maven { url = uri(sdkRepo) }
+        }
         mavenCentral()
     }
 }
@@ -23,5 +25,13 @@ plugins {
 }
 
 rootProject.name = "mib2q-plugins"
-include("plugins:bike-rack", "plugins:hello-menu", "plugins:inputs-demo",
-    "plugins:tailscale-status", "plugins:carmqtt-status")
+include(
+    "plugins:bike-rack",
+    "plugins:hello-menu",
+    "plugins:inputs-demo",
+    "plugins:mib2q-tailscale:plugin",
+    "plugins:mib2q-tailscale:daemon",
+    "plugins:mib2q-carmqtt:plugin",
+    "plugins:mib2q-carmqtt:daemon",
+    "plugins:mib2q-wireguard:daemon",
+)
