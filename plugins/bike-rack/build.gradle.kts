@@ -5,8 +5,8 @@ plugins {
 
 dependencies {
     // This test drives the runtime and the fake car directly, beyond what the plugin-test harness exposes.
-    testImplementation("dev.complex256.mibsdk:runtime:0.4.1")
-    testImplementation("dev.complex256.mibsdk:adapter-fake:0.4.1")
+    testImplementation("dev.complex256.mibsdk:runtime:0.5.0")
+    testImplementation("dev.complex256.mibsdk:adapter-fake:0.5.0")
 }
 
 // Tests run on the host JVM (the main source set is pinned to 1.8 by mibsdk.plugin).
