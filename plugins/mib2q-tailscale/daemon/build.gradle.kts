@@ -13,6 +13,10 @@ tasks.register<Exec>("buildDaemon") {
     workingDir(layout.projectDirectory)
     commandLine("bash", "scripts/build.sh")
     environment("QNX_IMAGE", qnxImage.get())
+    // Create the package output before the Docker build: the build scripts run
+    // as root and may create build/ themselves, leaving the runner unable to
+    // mkdir build/mpk afterwards.
+    doFirst { layout.buildDirectory.dir("mpk").get().asFile.mkdirs() }
 }
 
 tasks.register<Exec>("packageDaemon") {
