@@ -16,7 +16,9 @@ jobs:
         with:
           repository: complex256/mib2q-plugin-sdk
           path: sdk
-          ref: feat/status-bar
+          ref: main
+          # A public SDK repo needs no secret (the job token can read it); a private one needs SDK_REPO_TOKEN.
+          token: ${{ secrets.SDK_REPO_TOKEN || github.token }}
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
