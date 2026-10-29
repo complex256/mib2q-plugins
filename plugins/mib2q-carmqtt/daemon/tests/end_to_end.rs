@@ -76,7 +76,7 @@ fn exlap_to_mqtt_end_to_end() {
     .unwrap();
     let pipeline = carmqtt::app::start(&cfg).unwrap();
 
-    let v = "wauzzz8w0ja000001";
+    let v = "testvin0000000000";
     let odo = format!("mib2q/{v}/state/odometer");
     let conf = format!("homeassistant/sensor/mib2q_{v}/odometer/config");
     let coolant = format!("mib2q/{v}/avail/temp/coolant");

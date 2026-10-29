@@ -300,7 +300,7 @@ mod tests {
     use crate::testutil::{mock_pair, mqtt_packets, MockHandle, MockIo};
     use std::collections::VecDeque;
 
-    const VIN: &str = "TESTVIN0000000000";
+    const VIN: &str = "WAUZZZ8W0JA000001";
     const V: &str = "wauzzz8w0ja000001";
 
     struct MockConnector {

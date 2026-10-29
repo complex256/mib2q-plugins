@@ -157,7 +157,7 @@ mod tests {
     use crate::catalog::lookup;
 
     fn t() -> Topics {
-        Topics::new("mib2q", "homeassistant", "TESTVIN0000000000")
+        Topics::new("mib2q", "homeassistant", "WAUZZZ8W0JA000001")
     }
 
     fn dev() -> DeviceInfo {
@@ -190,7 +190,7 @@ mod tests {
         assert_eq!(j["availability"].as_array().unwrap().len(), 1, "car status must not gate sensors");
         assert_eq!(j["availability"][0]["topic"], "mib2q/wauzzz8w0ja000001/avail/odometer");
         assert_eq!(j["device"]["identifiers"][0], "mib2q_wauzzz8w0ja000001");
-        assert_eq!(j["device"]["serial_number"], "TESTVIN0000000000");
+        assert_eq!(j["device"]["serial_number"], "WAUZZZ8W0JA000001");
         assert_eq!(j["device"]["model"], "A4");
         let j: J = serde_json::from_str(&config_payload(&t, lookup("odometer").unwrap(), None, &dev())).unwrap();
         assert_eq!(j["unit_of_measurement"], "mi");

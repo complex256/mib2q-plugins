@@ -165,7 +165,7 @@ public class InputsDemoPlugin extends MibPlugin {
         }
         s = s.toggle("locked", "Locked", false).enabled("locked", false)
                 .choice("lang", "Language", LANGUAGES, lang)
-                .item("ver", "Version", "1.0.0")
+                .item("ver", "Version", "1.0.1")
                 .item("plug", "Plug", null, plug)
                 .item("plugv", "Plug value", "on", plug)
                 .progress("prog", "Progress", progress)

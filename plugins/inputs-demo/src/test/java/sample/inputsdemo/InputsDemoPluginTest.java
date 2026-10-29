@@ -89,7 +89,7 @@ class InputsDemoPluginTest {
                 "[off] Blue",
                 "[off] Locked [disabled]",
                 "Language: English >",
-                "Version: 1.0.0",
+                "Version: 1.0.1",
                 "[png:" + plug + "] Plug",
                 "[png:" + plug + "] Plug value: on",
                 "Progress: 60%",
@@ -274,10 +274,10 @@ class InputsDemoPluginTest {
     }
 
     @Test
-    void manifestIsApi5Version100() throws IOException {
+    void manifestIsApi5Version101() throws IOException {
         String json = manifest();
         assertTrue(json.contains("\"api\":5"), json);
-        assertTrue(json.contains("\"version\":\"1.0.0\""), json);
+        assertTrue(json.contains("\"version\":\"1.0.1\""), json);
         assertTrue(json.contains("\"permissions\":[\"ui.slot.statusbar\"]"), json);
         assertTrue(json.contains("\"icons\":[\"plug-24\"]"), json);
     }

@@ -142,6 +142,6 @@ To publish built packages locally:
 ```sh
 MIBPKG=/path/to/mibpkg scripts/publish-feed.sh \
   mib2q-plugins-v1.1.0 \
-  plugins/bike-rack/build/mibsdk/bike-rack-1.1.0.mpk \
-  plugins/hello-menu/build/mibsdk/hello-menu-1.4.0.mpk
+  plugins/bike-rack/build/mibsdk/bike-rack-1.1.1.mpk \
+  plugins/hello-menu/build/mibsdk/hello-menu-1.4.1.mpk
 ```
