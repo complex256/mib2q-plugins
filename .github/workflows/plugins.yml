@@ -116,3 +116,57 @@ jobs:
           name: ${{ matrix.id }}
           path: ${{ matrix.path }}/build/mpk/*.mpk
           if-no-files-found: error
+
+  publish:
+    # A tag publishes the built packages to the official collection. That collection is a
+    # separate repository, so it needs a token with contents:write there (PACKAGES_TOKEN).
+    if: >-
+      always() && startsWith(github.ref, 'refs/tags/v') &&
+      needs.java.result == 'success' && needs.native.result == 'success'
+    needs: [java, native]
+    runs-on: ubuntu-latest
+    concurrency:
+      group: official-feed
+      cancel-in-progress: false
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: packages
+          merge-multiple: true
+      - name: Host mibpkg
+        run: |
+          curl -fsSL -o mibpkg "$MIBSDK_MIBPKG_URL"
+          chmod +x mibpkg
+        env:
+          MIBSDK_MIBPKG_URL: ${{ vars.MIBSDK_MIBPKG_URL }}
+      - name: Official source list
+        # Keep the feed's sources.json on every release. It names the official collection,
+        # so dropping it would hide that collection from new cars.
+        run: |
+          set -euo pipefail
+          url=https://github.com/complex256/mibpkg-packages/releases/latest/download/sources.json
+          curl -fsSL "$url" -o sources.json ||
+            curl -fsSL https://raw.githubusercontent.com/complex256/mibpkg/main/packaging/sources.json -o sources.json
+      - name: Publish to the official collection
+        env:
+          GH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
+          TAG: mib2q-plugins-${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          if [ -z "${GH_TOKEN:-}" ]; then
+            echo "::error::PACKAGES_TOKEN is not set. Add a token with contents:write on complex256/mibpkg-packages."
+            exit 1
+          fi
+          find packages -type f -name '*.mpk' -print
+          ./mibpkg release packages/*.mpk \
+            --repo complex256/mibpkg-packages \
+            --tag "$TAG" \
+            --id complex256-mibpkg \
+            --name mibpkg \
+            --asset sources.json \
+            --out "$RUNNER_TEMP/feed" \
+            --publish
+      - name: Verify the collection
+        env:
+          GH_TOKEN: ${{ secrets.PACKAGES_TOKEN }}
+        run: ./mibpkg verify github:complex256/mibpkg-packages --latest

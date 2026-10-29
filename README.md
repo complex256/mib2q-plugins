@@ -98,7 +98,7 @@ The native packages install mibpkg-managed config:
 
 ## CI
 
-`.github/workflows/plugins.yml` runs two matrices:
+`.github/workflows/plugins.yml` runs two build matrices:
 
 - Java: SDK `publishLocal`, host mibpkg, plugin tests and plugin `.mpk`s.
 - Native: host mibpkg, private GHCR login, daemon `buildDaemon` /
@@ -112,3 +112,36 @@ Native CI is gated on the repository variable `NATIVE_CI=true` so a checkout
 without the private image token stays green. Set it once `GHCR_TOKEN` and the
 two images exist; the native matrix then runs on push (or use
 `workflow_dispatch`).
+
+## Releasing
+
+Push a tag `v*` (for example `v1.1.0`). When both build matrices succeed, the
+`publish` job adds the tag's packages to the official collection,
+`complex256/mibpkg-packages`, as the release `mib2q-plugins-<tag>`. Tag releases
+therefore require `NATIVE_CI=true`.
+
+The feed is what cars subscribe to. It is built into mibpkg; a car with
+internet sees it as:
+
+```text
+github:complex256/mibpkg-packages
+```
+
+Each feed release carries the previous index and `sources.json` forward, so
+publishing this repository does not remove packages published by another
+repository.
+
+Required repository secret:
+
+- `PACKAGES_TOKEN`: a token with `contents: write` on
+  `complex256/mibpkg-packages`. The workflow's default `GITHUB_TOKEN` can only
+  write this repository.
+
+To publish built packages locally:
+
+```sh
+MIBPKG=/path/to/mibpkg scripts/publish-feed.sh \
+  mib2q-plugins-v1.1.0 \
+  plugins/bike-rack/build/mibsdk/bike-rack-1.1.0.mpk \
+  plugins/hello-menu/build/mibsdk/hello-menu-1.4.0.mpk
+```
