@@ -92,8 +92,8 @@ export QNX_RUST_IMAGE=ghcr.io/complex256/qnx65-armv7-toolchain:8.5-rust
 
 The native packages install mibpkg-managed config:
 
-- `tailscale`: `@config/authkey`, `@config/accept-routes`,
-  `@config/tailscaled.state`; service `tailscale`.
+- `tailscale`: `@config/authkey`, `@config/accept-routes`; writable state in
+  `/mnt/persist/tailscale`; service `tailscale`.
 - `wireguard`: `@config/mibwg.conf`; service `mibwg`.
 - `carmqtt`: `@config/carmqtt.toml`; service `carmqtt` (waits for `tailnet`).
 

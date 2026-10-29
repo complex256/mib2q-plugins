@@ -30,6 +30,8 @@ export QNX_GO_IMAGE=ghcr.io/complex256/qnx65-armv7-toolchain:8.5-go127
           -Pmibsdk.mibpkg=/path/to/mibpkg
 ```
 
-The mibpkg package is `tailscale` (version from `daemon/VERSION`). Its `@config`
-directory holds `authkey` (optional, mode 600), `accept-routes` and
-`tailscaled.state`; the service runs `tailscale.sh serve @config`.
+The mibpkg package is `tailscale` (version from `daemon/VERSION`). Its
+read-only `@config` directory holds `authkey` (optional, mode 600) and
+`accept-routes`; `tailscaled.state`, profiles and the DERP cache stay in the
+writable `/mnt/persist/tailscale`. The service runs
+`tailscale.sh serve @config`.

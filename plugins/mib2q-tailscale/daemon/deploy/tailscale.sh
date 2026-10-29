@@ -61,11 +61,13 @@ START_WAIT=${TS_START_WAIT:-5}
 # /mnt/persist, so a redeploy of /mnt/app never changes it, and it applies at
 # the next start (or live: tailscale --socket=/tmp/tailscaled.sock set
 # --accept-routes=false).
-ROUTES_CONF=$STATE/accept-routes
 ts_accept_routes() {
+    # mibpkg service mode passes the read-only @config dir in CONF; manual
+    # starts keep the old /mnt/persist/tailscale/accept-routes location.
+    routes_conf=${CONF:-$STATE}/accept-routes
     tar_v=${TS_ACCEPT_ROUTES:-}
-    if [ -z "$tar_v" ] && [ -f "$ROUTES_CONF" ]; then
-        read tar_v <"$ROUTES_CONF"
+    if [ -z "$tar_v" ] && [ -f "$routes_conf" ]; then
+        read tar_v <"$routes_conf"
     fi
     tar_v=${tar_v#accept-routes=}
     case $tar_v in
@@ -636,8 +638,9 @@ ts_start_daemon() {
     # carried a warning that looked like an auth problem and was not one. Keep
     # this list in step with `tailscale debug prefs`.
     upfail=
-    if [ -s "$STATE/authkey" ]; then
-        "$RUN/tailscale" --socket="$SOCK" up --timeout=60s --auth-key="file:$STATE/authkey" --accept-dns=false $(ts_accept_routes) >>"$LOG" 2>&1 || upfail=$?
+    authkey=${CONF:-$STATE}/authkey
+    if [ -s "$authkey" ]; then
+        "$RUN/tailscale" --socket="$SOCK" up --timeout=60s --auth-key="file:$authkey" --accept-dns=false $(ts_accept_routes) >>"$LOG" 2>&1 || upfail=$?
     else
         "$RUN/tailscale" --socket="$SOCK" up --timeout=60s --accept-dns=false $(ts_accept_routes) >>"$LOG" 2>&1 || upfail=$?
     fi
@@ -776,11 +779,11 @@ ts_debug() {
 
 # mibpkg service mode: start the daemon and stay in the foreground so the
 # supervisor owns a real process. The first argument after `serve` is the
-# state/config directory (mibpkg passes @config), which holds authkey,
-# accept-routes and tailscaled.state.
+# read-only config directory (mibpkg passes @config), which holds authkey and
+# accept-routes. The state directory stays writable at /mnt/persist/tailscale.
 ts_serve() {
     if [ -n "${2:-}" ]; then
-        STATE=$2
+        CONF=$2
     fi
     ts_start || return 1
     trap 'ts_stop; exit 0' TERM INT HUP
