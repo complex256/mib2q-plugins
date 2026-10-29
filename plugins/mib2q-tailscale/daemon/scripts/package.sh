@@ -8,7 +8,9 @@ BIN=$ROOT/build
 VERSION=$(cat "$ROOT/VERSION")
 MIBPKG=${MIBPKG:-mibpkg}
 OUT=${1:-$ROOT/build/mpk}
+PLUGIN_STAGE=${PLUGIN_STAGE:-$ROOT/../plugin/build/mibpkg-stage}
 [ -x "$BIN/tailscaled" ] || { echo "missing $BIN/tailscaled - run scripts/build.sh first" >&2; exit 1; }
+[ -f "$PLUGIN_STAGE/tailscale-status.jar" ] || { echo "missing $PLUGIN_STAGE/tailscale-status.jar - build the plugin package stage first" >&2; exit 1; }
 [ -x "$MIBPKG" ] || { echo "missing host mibpkg at $MIBPKG - pass MIBPKG=/path/to/mibpkg" >&2; exit 1; }
 STAGE=$(mktemp -d)
 trap 'rm -rf "$STAGE"' EXIT
@@ -22,6 +24,10 @@ cp "$ROOT/deploy/tailscale.sh" "$STAGE/bin/tailscale.sh"
 chmod 755 "$STAGE/bin/tailscale.sh"
 cp "$ROOT/packaging/authkey.example" "$STAGE/authkey.example"
 cp "$ROOT/packaging/accept-routes.example" "$STAGE/accept-routes.example"
+cp "$PLUGIN_STAGE/tailscale-status.jar" "$STAGE/tailscale-status.jar"
+cp "$PLUGIN_STAGE/tailscale-status.jar.stamp" "$STAGE/tailscale-status.jar.stamp"
+mkdir -p "$STAGE/icons"
+cp "$PLUGIN_STAGE"/icons/*.png "$STAGE/icons/"
 mkdir -p "$OUT"
 "$MIBPKG" build "$STAGE" "$OUT"
 ls -l "$OUT"/tailscale-"$VERSION".mpk

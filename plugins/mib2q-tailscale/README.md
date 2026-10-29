@@ -17,7 +17,6 @@ QNX toolchain and deploy details.
 ```sh
 # Java status plugin
 ./gradlew :plugins:mib2q-tailscale:plugin:test \
-          :plugins:mib2q-tailscale:plugin:mibpkgPackage \
           -Pmibsdk.repo=file:///path/to/mib2q-plugin-sdk/build/repo \
           -Pmibsdk.mibpkg=/path/to/mibpkg
 
@@ -30,7 +29,7 @@ export QNX_GO_IMAGE=ghcr.io/complex256/qnx65-armv7-toolchain:8.5-go127
           -Pmibsdk.mibpkg=/path/to/mibpkg
 ```
 
-The mibpkg package is `tailscale` (version from `daemon/VERSION`). Its
+The mibpkg package is `tailscale` (version from `daemon/VERSION`). It contains the native payload and the `tailscale-status` plugin, so one package installs both. Its
 read-only `@config` directory holds `authkey` (optional, mode 600) and
 `accept-routes`; `tailscaled.state`, profiles and the DERP cache stay in the
 writable `/mnt/persist/tailscale`. The service runs

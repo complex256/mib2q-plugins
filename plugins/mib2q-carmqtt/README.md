@@ -15,7 +15,6 @@ See `daemon/README.md` for the daemon, config and MQTT layout.
 ```sh
 # Java status plugin
 ./gradlew :plugins:mib2q-carmqtt:plugin:test \
-          :plugins:mib2q-carmqtt:plugin:mibpkgPackage \
           -Pmibsdk.repo=file:///path/to/mib2q-plugin-sdk/build/repo \
           -Pmibsdk.mibpkg=/path/to/mibpkg
 
@@ -28,5 +27,5 @@ export QNX_RUST_IMAGE=ghcr.io/complex256/qnx65-armv7-toolchain:8.5-rust
           -Pmibsdk.mibpkg=/path/to/mibpkg
 ```
 
-The mibpkg package is `carmqtt`; its `@config/carmqtt.toml` is required and the
+The mibpkg package is `carmqtt`; it contains the native daemon and the `carmqtt-status` plugin, so one package installs both. its `@config/carmqtt.toml` is required and the
 service waits for the `tailnet` start condition (Tailscale brings it up).

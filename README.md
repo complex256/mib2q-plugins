@@ -81,12 +81,11 @@ export QNX_RUST_IMAGE=ghcr.io/complex256/qnx65-armv7-toolchain:8.5-rust
           :plugins:mib2q-wireguard:daemon:buildDaemon \
           :plugins:mib2q-carmqtt:daemon:buildDaemon
 
-# .mpk packages
+# .mpk packages (one per product; the Tailscale and carmqtt packages include their
+# status plugin, so build the daemon package, not a separate plugin package)
 ./gradlew :plugins:mib2q-tailscale:daemon:packageDaemon \
           :plugins:mib2q-wireguard:daemon:packageDaemon \
           :plugins:mib2q-carmqtt:daemon:packageDaemon \
-          :plugins:mib2q-tailscale:plugin:mibpkgPackage \
-          :plugins:mib2q-carmqtt:plugin:mibpkgPackage \
           -Pmibsdk.mibpkg=/path/to/mibpkg
 ```
 

@@ -26,3 +26,10 @@ restart = "always"
 # Wait for the tailnet (the MQTT broker is reached over Tailscale); start anyway after 5 min.
 after = ["tailnet"]
 after_timeout = "5m"
+
+[plugin]
+id = "carmqtt-status"
+jar = "carmqtt-status.jar"
+api = 6
+permissions = ["network", "ui.slot.statusbar"]
+icons = ["mqtt-on", "mqtt-off"]

@@ -6,6 +6,7 @@ val qnxImage = providers.gradleProperty("qnx.go.image")
     .orElse(providers.environmentVariable("QNX_GO_IMAGE"))
     .orElse("qnx65-armv7-toolchain:8.5-go127")
 val mibpkg = providers.gradleProperty("mibsdk.mibpkg")
+val pluginStage = project(":plugins:mib2q-tailscale:plugin").layout.buildDirectory.dir("mibpkg-stage")
 
 tasks.register<Exec>("buildDaemon") {
     group = "native"
@@ -22,7 +23,7 @@ tasks.register<Exec>("buildDaemon") {
 tasks.register<Exec>("packageDaemon") {
     group = "native"
     description = "Build and package the tailscale mibpkg package"
-    dependsOn("buildDaemon")
+    dependsOn("buildDaemon", ":plugins:mib2q-tailscale:plugin:mibpkgPackageStage")
     workingDir(layout.projectDirectory)
     val out = layout.buildDirectory.dir("mpk").get().asFile
     commandLine("bash", "scripts/package.sh", out.absolutePath)
@@ -30,6 +31,7 @@ tasks.register<Exec>("packageDaemon") {
         val path = mibpkg.orNull
             ?: throw GradleException("mibsdk.mibpkg is not set: pass -Pmibsdk.mibpkg=/path/to/mibpkg")
         environment("MIBPKG", path)
+        environment("PLUGIN_STAGE", pluginStage.get().asFile.absolutePath)
         out.mkdirs()
     }
 }

@@ -19,12 +19,6 @@ jobs:
           - id: inputs-demo
             project: inputs-demo
             path: plugins/inputs-demo
-          - id: tailscale-status
-            project: mib2q-tailscale:plugin
-            path: plugins/mib2q-tailscale/plugin
-          - id: carmqtt-status
-            project: mib2q-carmqtt:plugin
-            path: plugins/mib2q-carmqtt/plugin
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

@@ -55,3 +55,10 @@ restart = "always"
 # boot forever if the vehicle is offline.
 after = ["internet"]
 after_timeout = "5m"
+
+[plugin]
+id = "tailscale-status"
+jar = "tailscale-status.jar"
+api = 6
+permissions = ["network", "ui.slot.statusbar"]
+icons = ["tailscale-on", "tailscale-off"]
