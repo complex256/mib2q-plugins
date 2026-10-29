@@ -108,3 +108,8 @@ The native packages install mibpkg-managed config:
 Set the `MIBSDK_MIBPKG_URL` repository variable to the host (Linux) mibpkg
 binary and `GHCR_TOKEN` to a token with `read:packages` for the private QNX
 images. The SDK repo is public, so no `SDK_REPO_TOKEN` is needed.
+
+Native CI is gated on the repository variable `NATIVE_CI=true` so a checkout
+without the private image token stays green. Set it once `GHCR_TOKEN` and the
+two images exist; the native matrix then runs on push (or use
+`workflow_dispatch`).

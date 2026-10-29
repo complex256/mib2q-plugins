@@ -2,6 +2,7 @@ name: plugins
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 jobs:
   java:
@@ -59,6 +60,9 @@ jobs:
           if-no-files-found: error
 
   native:
+    # Native jobs need the private QNX GHCR images and GHCR_TOKEN. Set the
+    # repository variable NATIVE_CI=true once those are in place.
+    if: vars.NATIVE_CI == 'true'
     strategy:
       fail-fast: false
       matrix:
