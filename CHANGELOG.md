@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.2.1 — 2026-10-29
+
+### Fixed
+
+- The `carmqtt` and `tailscale` packages now include the generated `requires.toml`; their shell
+  packaging scripts previously copied only the plugin jar. They now require SDK 0.6.3 like the Java
+  packages.
+
+### Packages
+
+| Package | Version |
+|---|---|
+| `carmqtt` | 0.3.2 |
+| `tailscale` | 1.102.8 |
+
+The other packages keep their 1.2.0 versions and are carried forward.
+
 ## 1.2.0 — 2026-10-29
 
 ### Changed
