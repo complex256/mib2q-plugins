@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.2.2 — 2026-10-30
+
+### Changed
+
+- `carmqtt-status` 1.0.1 and `tailscale-status` 1.0.1: the status icons are redrawn at 30×30 px, the
+  built-in bar's native size, instead of being upscaled from 20×20.
+
+### Packages
+
+| Package | Version |
+|---|---|
+| `carmqtt` | 0.3.3 |
+| `tailscale` | 1.102.9 |
+
+The other packages keep their 1.2.1 versions and are carried forward.
+
 ## 1.2.1 — 2026-10-29
 
 ### Fixed
