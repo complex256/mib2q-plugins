@@ -14,6 +14,7 @@
 |---|---|
 | `carmqtt` | 0.3.2 |
 | `tailscale` | 1.102.8 |
+| `wireguard` | 1.0.2 |
 
 The other packages keep their 1.2.0 versions and are carried forward.
 
