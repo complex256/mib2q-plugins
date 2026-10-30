@@ -76,7 +76,7 @@ receives one snapshot and is closed; a bind failure is logged and ignored.
 ```
 v=1
 daemon=carmqtt
-version=0.3.0
+version=0.3.1
 mqtt=0|1
 last_publish_age_s=<n>|-1      # -1 until the first publish; monotonic seconds
 signals=<n>

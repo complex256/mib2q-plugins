@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.2.0 — 2026-10-29
+
+### Changed
+
+- Rebuilt every package against SDK 0.6.3. Plugin packages now carry `requires.toml`, naming
+  0.6.3 as the oldest SDK they run on; mibpkg 0.11.1 enforces it on install and update.
+- Bumped all product packages so the new sidecar is published under a new version.
+
+### Packages
+
+| Package | Version |
+|---|---|
+| `bike-rack` | 1.1.2 |
+| `hello-menu` | 1.4.2 |
+| `inputs-demo` | 1.0.2 |
+| `tailscale` | 1.102.7 |
+| `carmqtt` | 0.3.1 |
+| `wireguard` | 1.0.1 |
+
 ## 1.1.0 — 2026-10-29
 
 ### Changed
