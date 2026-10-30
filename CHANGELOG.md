@@ -13,10 +13,14 @@
 
 | Package | Version |
 |---|---|
+| `bike-rack` | 1.1.3 |
+| `hello-menu` | 1.4.3 |
+| `inputs-demo` | 1.0.3 |
 | `carmqtt` | 0.3.3 |
 | `tailscale` | 1.102.9 |
+| `wireguard` | 1.0.3 |
 
-The other packages keep their 1.2.1 versions and are carried forward.
+All packages are rebuilt and bumped in this release.
 
 ## 1.2.1 — 2026-10-29
 

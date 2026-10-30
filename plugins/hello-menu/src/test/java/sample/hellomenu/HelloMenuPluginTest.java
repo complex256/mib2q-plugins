@@ -207,7 +207,7 @@ class HelloMenuPluginTest {
     void manifestIsApi6Version142() throws IOException {
         String json = manifest();
         assertTrue(json.contains("\"api\":6"), json);
-        assertTrue(json.contains("\"version\":\"1.4.2\""), json);
+        assertTrue(json.contains("\"version\":\"1.4.3\""), json);
     }
 
     private static String manifest() throws IOException {

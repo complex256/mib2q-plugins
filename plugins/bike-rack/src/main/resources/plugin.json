@@ -1,1 +1,1 @@
-{"id":"bike-rack","name":"Bike Rack","version":"1.1.2","author":"complex256","api":3,"main":"sample.bikerack.BikeRackPlugin","permissions":["vehicle.read","vehicle.parking.write","ui.slot.carmenu","ui.slot.statusbar"],"icons":["bike","bike-20"]}
+{"id":"bike-rack","name":"Bike Rack","version":"1.1.3","author":"complex256","api":3,"main":"sample.bikerack.BikeRackPlugin","permissions":["vehicle.read","vehicle.parking.write","ui.slot.carmenu","ui.slot.statusbar"],"icons":["bike","bike-20"]}
