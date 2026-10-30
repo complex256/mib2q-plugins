@@ -6,6 +6,8 @@
 
 - `carmqtt-status` 1.0.1 and `tailscale-status` 1.0.1: the status icons are redrawn at 30×30 px, the
   built-in bar's native size, instead of being upscaled from 20×20.
+- Both packages now require SDK **0.7.0**, which adds the 30 px status-icon limit. mibpkg updates the SDK
+  before the plugins.
 
 ### Packages
 
