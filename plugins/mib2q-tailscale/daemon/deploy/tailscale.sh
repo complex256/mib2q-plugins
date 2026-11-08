@@ -10,7 +10,15 @@
 # is not mmap-capable for exec, so binaries run from /tmp (RAM, cleared
 # between sessions), while state lives in /mnt/persist (flash).
 case $0 in */*) here=${0%/*} ;; *) here=. ;; esac
-DIR=${TS_DIR:-$(cd "$here" && pwd)}
+# mibpkg runs a copy of this script from /tmp, so $0's directory is not the package. Its supervisor
+# exports MIBPKG_PKG_DIR; the binaries live in that package's bin/. Manual deploys still use $0.
+if [ -n "${TS_DIR:-}" ]; then
+    DIR=$TS_DIR
+elif [ -n "${MIBPKG_PKG_DIR:-}" ]; then
+    DIR=$MIBPKG_PKG_DIR/bin
+else
+    DIR=$(cd "$here" && pwd)
+fi
 STATE=${TS_STATE:-/mnt/persist/tailscale}
 # RAM directory for the binaries and everything that only lives for one boot.
 # Always /tmp on the unit; overridable so the host test can run this script.

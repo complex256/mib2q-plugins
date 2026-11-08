@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.2.3 — 2026-11-08
+
+### Fixed
+
+- `tailscale` 1.102.10: when mibpkg runs the control script from `/tmp`, it now uses the
+  supervisor's `MIBPKG_PKG_DIR` to find the package's binaries instead of looking in `/tmp`.
+  This is what made the service restart-loop with `cp: Can't open source file (/tmp/tailscaled)`.
+
+### Packages
+
+| Package | Version |
+|---|---|
+| `tailscale` | 1.102.10 |
+
+The other packages keep their 1.2.2 versions and are carried forward.
+
 ## 1.2.2 — 2026-10-30
 
 ### Changed
