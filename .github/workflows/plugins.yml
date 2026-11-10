@@ -73,6 +73,10 @@ jobs:
             project: mib2q-carmqtt:daemon
             path: plugins/mib2q-carmqtt/daemon
             image: ghcr.io/complex256/qnx65-armv7-toolchain:8.5-rust
+          - id: rsyncd
+            project: mib2q-rsync:daemon
+            path: plugins/mib2q-rsync/daemon
+            image: ghcr.io/complex256/qnx65-armv7-toolchain:8.5-rust
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

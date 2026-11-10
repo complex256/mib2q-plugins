@@ -8,6 +8,7 @@ they talk to.
 |---|---|---|---|
 | `mib2q-tailscale` | `tailscale-status` icon/page | `tailscaled`, `tailscale`, `sntp`, `tsstatus`, `libtsclock.so` | `tailscale` |
 | `mib2q-carmqtt` | `carmqtt-status` icon/page | `carmqtt` | `carmqtt` |
+| `mib2q-rsync` | `rsync-status` icon/page | `rsyncd`, `rsync` | `rsyncd` |
 | `mib2q-wireguard` | — | `mibwg` | `wireguard` |
 | `bike-rack` | bike-rack plugin | — | `bike-rack` |
 | `hello-menu` | hello-menu plugin | — | `hello-menu` |
@@ -28,6 +29,9 @@ plugins/
     daemon/                   Gradle base: native Go sources, scripts, packaging
   mib2q-carmqtt/
     plugin/                   Gradle + mibsdk.plugin: carmqtt-status
+    daemon/                   Gradle base: native Rust sources, scripts, packaging
+  mib2q-rsync/
+    plugin/                   Gradle + mibsdk.plugin: rsync-status
     daemon/                   Gradle base: native Rust sources, scripts, packaging
   mib2q-wireguard/
     daemon/                   Gradle base: native Go sources, scripts, packaging

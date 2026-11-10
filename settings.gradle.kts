@@ -33,5 +33,7 @@ include(
     "plugins:mib2q-tailscale:daemon",
     "plugins:mib2q-carmqtt:plugin",
     "plugins:mib2q-carmqtt:daemon",
+    "plugins:mib2q-rsync:plugin",
+    "plugins:mib2q-rsync:daemon",
     "plugins:mib2q-wireguard:daemon",
 )

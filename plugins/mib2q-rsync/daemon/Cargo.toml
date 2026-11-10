@@ -1,0 +1,16 @@
+[package]
+name = "rsyncd"
+version = "0.1.0"
+edition = "2021"
+description = "Periodic rsync file synchronization over Tailscale with lifecycle hooks"
+license = "MIT"
+authors = ["complex256 <me@complex256.dev>"]
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+toml = "0.8"
+
+[profile.release]
+panic = "abort"
+opt-level = "s"
+lto = true

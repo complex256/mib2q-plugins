@@ -1,0 +1,59 @@
+# rsyncd configuration.
+#
+# Installed by mibpkg as
+#   /mnt/app/root/mibpkg/state/config/rsyncd/rsyncd.toml
+# and passed to the daemon with --config. Change it through mibpkg, not by
+# editing /mnt/app directly.
+#
+# Paths in `local` may be ordinary paths or `@media:<marker>/<relpath>`
+# expressions. A marker is looked up in `daemon.media_roots` in order; the first
+# root that contains it wins. A job whose marker is absent is reported as
+# `waiting_media` and retried every `poll_interval_s`.
+
+[daemon]
+status_port = 19852
+# Overridden by the service's --rsync argument (the package's own binary).
+# When neither is set the daemon uses /mnt/app/root/rsyncd/bin/rsync.
+rsync_bin = "rsync"
+# Removable media mount points, searched in order.
+media_roots = ["/fs/sda0", "/fs/sdb0", "/fs/sd0", "/fs/sd1", "/fs/usb0"]
+# tsstatus endpoint used when a job sets require_tailnet = true.
+tailscale_status_addr = "127.0.0.1:19850"
+# auto | wifi_allowlist | manual
+#   auto            sync on schedule (subject to require_tailnet)
+#   wifi_allowlist  sync on schedule only while the current SSID is allowed
+#   manual          sync only on an explicit `sync` status command
+mode = "auto"
+allowed_ssids = []
+poll_interval_s = 10
+
+[log]
+level = "info"
+file = "/tmp/rsyncd.log"
+max_bytes = 1048576
+
+[[jobs]]
+id = "music"
+name = "Music Library"
+enabled = true
+direction = "pull"          # pull = remote -> local, push = local -> remote
+remote = "rsync://100.64.0.10/music/"
+local = "@media:.music-sd/Music/"
+interval_s = 1800
+require_tailnet = true
+fat_safe = true             # FAT/exFAT-safe flags (no perms/owners/links, 2 s window)
+delete = true
+bwlimit_kbps = 4000
+exclude = [".music-sd", ".rsync-*", "mibpkg/", "System Volume Information/"]
+extra_args = []
+# password_file = "/mnt/app/root/mibpkg/state/config/rsyncd/music.secret"
+
+# Hooks run through `sh -c` with the RSYNC_* environment documented in the
+# README. pre_sync failure aborts the run; on_change runs only when files
+# changed; post_sync runs after every successful run; on_error runs on failure.
+[jobs.hooks]
+# pre_sync = "..."
+# on_change = "/mnt/app/root/scripts/refresh-hmi-media.sh"
+# post_sync = "..."
+# on_error = "..."
+timeout_s = 30

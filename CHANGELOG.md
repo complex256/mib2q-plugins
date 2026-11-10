@@ -1,5 +1,21 @@
 # Changelog
 
+## 1.3.0 — 2026-11-09
+
+### Added
+
+- `rsyncd` 0.1.0: periodic `rsync` file synchronization over Tailscale with `@media:<marker>`
+  SD card discovery, FAT-safe staging, lifecycle hooks (`pre_sync`, `on_change`, `post_sync`,
+  `on_error`), and the `rsync-status` HMI plugin.
+
+### Packages
+
+| Package | Version |
+|---|---|
+| `rsyncd` | 0.1.0 |
+
+The other packages keep their 1.2.3 versions and are carried forward.
+
 ## 1.2.3 — 2026-11-08
 
 ### Fixed

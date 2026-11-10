@@ -1,0 +1,16 @@
+{
+  "id": "rsync-status",
+  "name": "Rsync",
+  "version": "0.1.0",
+  "author": "complex256",
+  "api": 7,
+  "main": "sample.rsyncstatus.RsyncStatusPlugin",
+  "permissions": [
+    "network",
+    "network.wifi",
+    "vehicle.read",
+    "ui.slot.carmenu",
+    "ui.slot.statusbar"
+  ],
+  "icons": ["rsync-on", "rsync-off"]
+}

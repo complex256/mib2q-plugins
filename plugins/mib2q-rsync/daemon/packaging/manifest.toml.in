@@ -1,0 +1,40 @@
+[package]
+name = "rsyncd"
+version = "@VERSION@"
+description = "Periodic rsync file synchronization over Tailscale with lifecycle hooks"
+
+[compat]
+units = ["MHI2Q"]
+
+[[file]]
+src = "bin/rsyncd"
+mode = "755"
+
+[[file]]
+src = "bin/rsync"
+mode = "755"
+
+[[file]]
+src = "rsyncd.toml.example"
+
+[[config]]
+path = "rsyncd.toml"
+example = "rsyncd.toml.example"
+required = true
+
+[[service]]
+name = "rsyncd"
+exec = "@pkg/bin/rsyncd"
+args = ["--config", "@config/rsyncd.toml", "--rsync", "@pkg/bin/rsync"]
+restart = "always"
+# Wait for the tailnet (most remotes are reached over Tailscale); start anyway
+# after 5 minutes so a car that boots offline still gets local-only jobs.
+after = ["tailnet"]
+after_timeout = "5m"
+
+[plugin]
+id = "rsync-status"
+jar = "rsync-status.jar"
+api = 7
+permissions = ["network", "network.wifi", "vehicle.read", "ui.slot.carmenu", "ui.slot.statusbar"]
+icons = ["rsync-on", "rsync-off"]
