@@ -30,6 +30,6 @@ after_timeout = "5m"
 [plugin]
 id = "carmqtt-status"
 jar = "carmqtt-status.jar"
-api = 6
+api = 9
 permissions = ["network", "ui.slot.statusbar"]
 icons = ["mqtt-on", "mqtt-off"]

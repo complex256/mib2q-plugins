@@ -5,17 +5,17 @@ import java.util.Properties
 import mibsdk.adapter.fake.FakePlatform
 import mibsdk.adapter.fake.FakeUi
 import mibsdk.api.Features
-import mibsdk.api.SoundDirections
+import mibsdk.api.vehicle.SoundDirections
 import mibsdk.platform.HookTable
-import mibsdk.platform.ParkingIo
 import mibsdk.platform.PlatformAdapter
-import mibsdk.platform.UiInput
-import mibsdk.platform.UiTable
-import mibsdk.runtime.Clock
-import mibsdk.runtime.PluginState
-import mibsdk.runtime.RingLog
+import mibsdk.platform.io.ParkingIo
+import mibsdk.platform.ui.UiInput
+import mibsdk.platform.ui.UiTable
 import mibsdk.runtime.RuntimeConfig
 import mibsdk.runtime.SdkRuntime
+import mibsdk.runtime.health.RingLog
+import mibsdk.runtime.plugin.PluginState
+import mibsdk.runtime.util.Clock
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -80,9 +80,9 @@ class BikeRackPluginTest {
     private fun installIcons() {
         val dir = File(FakePlatform.roots(tmp).install(), "icons/bike-rack")
         dir.mkdirs()
-        File(dir, "index.properties").writeText("bike=$BIG_SHA,72,72\nbike-20=$SMALL_SHA,20,20\n")
+        File(dir, "index.properties").writeText("bike=$BIG_SHA,72,72\nbike-30=$SMALL_SHA,20,20\n")
         File("src/main/icons/bike.png").copyTo(File(dir, "$BIG_SHA.png"))
-        File("src/main/icons/bike-20.png").copyTo(File(dir, "$SMALL_SHA.png"))
+        File("src/main/icons/bike-30.png").copyTo(File(dir, "$SMALL_SHA.png"))
     }
 
     private fun awaitApplied(size: Int, last: SoundDirections) {
@@ -223,7 +223,7 @@ class BikeRackPluginTest {
         assertEquals(null, storedActive())
     }
 
-    private fun awaitHeld(done: (List<mibsdk.runtime.ActiveOverride>) -> Boolean) {
+    private fun awaitHeld(done: (List<mibsdk.runtime.vehicle.ActiveOverride>) -> Boolean) {
         for (i in 0 until 500) {
             if (done(rt!!.activeOverrides())) return
             Thread.sleep(10)
@@ -321,7 +321,7 @@ class BikeRackPluginTest {
         start(true)
         awaitApplied(1, f1r0l1x1)
         await("row with the bike icon") { ui.carRows().contains("[png:$BIG_SHA] Bike rack") }
-        await("RACK with the tinted bike-20") { ui.statusParts().contains("[png:$SMALL_SHA] RACK") }
+        await("RACK with the tinted bike-30") { ui.statusParts().contains("[png:$SMALL_SHA] RACK") }
     }
 
     @Test
@@ -333,10 +333,10 @@ class BikeRackPluginTest {
     }
 
     @Test
-    fun manifestDeclaresTheIconsAtApiThree() {
+    fun manifestDeclaresCurrentApiAndTheIcons() {
         val m = File("src/main/resources/plugin.json").readText()
-        assertTrue(m.contains("\"api\":3"), m)
-        assertTrue(m.contains("\"icons\":[\"bike\",\"bike-20\"]"), m)
+        assertTrue(m.contains("\"api\":" + mibsdk.api.SdkInfo.API_VERSION), m)
+        assertTrue(m.contains("\"icons\":[\"bike\",\"bike-30\"]"), m)
     }
 
     @Test

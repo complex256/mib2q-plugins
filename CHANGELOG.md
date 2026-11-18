@@ -1,5 +1,28 @@
 # Changelog
 
+## 1.4.0 — 2026-11-18
+
+### Changed
+
+- Rebuilt every plugin against SDK **0.9.0** and plugin api **9**. The api classes moved into
+  `mibsdk.api.ui`, `.vehicle` and `.net`; no behavior changed. Each package now requires SDK 0.9.0
+  (mibpkg updates the SDK before the plugins), and plugins built for api 8 or lower no longer load on it.
+- `bike-rack` and `hello-menu`: the status icons are redrawn at 30×30 px, the built-in bar's native size,
+  as `bike-30` and `hello-30` (they were 20×20).
+
+### Packages
+
+| Package | Version |
+|---|---|
+| `bike-rack` | 1.1.4 |
+| `hello-menu` | 1.4.4 |
+| `inputs-demo` | 1.0.4 |
+| `carmqtt` | 0.3.4 |
+| `tailscale` | 1.102.11 |
+| `rsyncd` | 0.1.1 |
+
+`wireguard` has no plugin and keeps its 1.0.3 version, carried forward.
+
 ## 1.3.0 — 2026-11-09
 
 ### Added

@@ -1,6 +1,6 @@
 [package]
 name = "rsyncd"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 description = "Periodic rsync file synchronization over Tailscale with lifecycle hooks"
 license = "MIT"

@@ -1,19 +1,19 @@
 package sample.bikerack
 
-import mibsdk.api.IgnitionChanged
 import mibsdk.api.MibPlugin
-import mibsdk.api.OverrideConflictException
-import mibsdk.api.OverrideScope
-import mibsdk.api.Page
-import mibsdk.api.PageSpec
-import mibsdk.api.ParkingSoundChanged
 import mibsdk.api.PluginContext
-import mibsdk.api.SoundDirections
-import mibsdk.api.StatusItem
 import mibsdk.api.Storage
 import mibsdk.api.Subscription
-import mibsdk.api.UiAction
-import mibsdk.api.VehicleOverride
+import mibsdk.api.ui.Page
+import mibsdk.api.ui.PageSpec
+import mibsdk.api.ui.StatusItem
+import mibsdk.api.ui.UiAction
+import mibsdk.api.vehicle.IgnitionChanged
+import mibsdk.api.vehicle.OverrideConflictException
+import mibsdk.api.vehicle.OverrideScope
+import mibsdk.api.vehicle.ParkingSoundChanged
+import mibsdk.api.vehicle.SoundDirections
+import mibsdk.api.vehicle.VehicleOverride
 
 /**
  * Silences the rear parking-sensor tones while a bike rack is fitted. The toggle is storage key `active`.
@@ -36,7 +36,7 @@ import mibsdk.api.VehicleOverride
  * An on press while already armed changes nothing: if the mute was lost to an [OverrideConflictException] (another
  * plugin holds the parking override), toggle off and on again to retry it.
  *
- * Icons: the manifest (api 3) declares `bike` (72x72, the Car row) and `bike-20` (20x20, the status item), white
+ * Icons: the manifest (api 9) declares `bike` (72x72, the Car row) and `bike-30` (30x30, the status item), white
  * bicycles from `tools/make_builtin_icons.py --plugin-bike-rack`, both tinted. Without icon support, or with the
  * package's icons not installed, the row and the item show without them.
  *
@@ -64,7 +64,7 @@ class BikeRackPlugin : MibPlugin() {
         // the manifest declares both slot permissions (all-or-nothing: a running plugin holds them); without a
         // slot, or with the SDK UI off, these handles are inert and the mute below works the same
         ctx.ui().carMenuRow("Bike rack", rack, ctx.ui().icon("bike"))
-        statusItem = ctx.ui().statusItem(statusText(), ctx.ui().icon("bike-20"))
+        statusItem = ctx.ui().statusItem(statusText(), ctx.ui().icon("bike-30"))
         ctx.events().on(IgnitionChanged::class.java) { e ->
             if (!e.isOn) ignitionOff(ctx, storage) else ignitionOn(ctx, storage)
             refresh()

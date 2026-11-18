@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Properties;
 import mibsdk.adapter.fake.FakeUi;
 import mibsdk.api.Features;
-import mibsdk.api.HmiContext;
+import mibsdk.api.ui.HmiContext;
 import mibsdk.test.PluginTestHarness;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
@@ -56,8 +56,8 @@ class HelloMenuPluginTest {
         row = "[png:" + h.iconSha("hello") + "] Hello";
         rowStar = "[star] Hello";
         // The status icon starts in its own colours.
-        statusPng = "[png:" + h.iconSha("hello-20") + "+own] Hello";
-        statusTinted = "[png:" + h.iconSha("hello-20") + "] Hello";
+        statusPng = "[png:" + h.iconSha("hello-30") + "+own] Hello";
+        statusTinted = "[png:" + h.iconSha("hello-30") + "] Hello";
     }
 
     @Test
@@ -204,10 +204,10 @@ class HelloMenuPluginTest {
     }
 
     @Test
-    void manifestIsApi6Version142() throws IOException {
+    void manifestDeclaresCurrentApiAndVersion() throws IOException {
         String json = manifest();
-        assertTrue(json.contains("\"api\":6"), json);
-        assertTrue(json.contains("\"version\":\"1.4.3\""), json);
+        assertTrue(json.contains("\"api\":" + mibsdk.api.SdkInfo.API_VERSION), json);
+        assertTrue(json.contains("\"version\":\"1.4.4\""), json);
     }
 
     private static String manifest() throws IOException {

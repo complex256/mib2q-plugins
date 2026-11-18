@@ -4,18 +4,18 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import mibsdk.api.Features;
-import mibsdk.api.Icon;
-import mibsdk.api.IgnitionChanged;
 import mibsdk.api.MibPlugin;
-import mibsdk.api.Net;
-import mibsdk.api.Page;
-import mibsdk.api.PageSpec;
 import mibsdk.api.PluginContext;
 import mibsdk.api.Scheduler;
-import mibsdk.api.StatusItem;
-import mibsdk.api.Ui;
-import mibsdk.api.UiAction;
-import mibsdk.api.WifiStatus;
+import mibsdk.api.net.Net;
+import mibsdk.api.net.WifiStatus;
+import mibsdk.api.ui.Icon;
+import mibsdk.api.ui.Page;
+import mibsdk.api.ui.PageSpec;
+import mibsdk.api.ui.StatusItem;
+import mibsdk.api.ui.Ui;
+import mibsdk.api.ui.UiAction;
+import mibsdk.api.vehicle.IgnitionChanged;
 
 /**
  * The built-in status bar's Rsync icon and page, from the unit's {@code rsyncd} on {@code 127.0.0.1:19852}:

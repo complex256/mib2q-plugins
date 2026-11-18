@@ -59,6 +59,6 @@ after_timeout = "5m"
 [plugin]
 id = "tailscale-status"
 jar = "tailscale-status.jar"
-api = 6
+api = 9
 permissions = ["network", "ui.slot.statusbar"]
 icons = ["tailscale-on", "tailscale-off"]

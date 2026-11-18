@@ -1,9 +1,9 @@
 {
   "id": "rsync-status",
   "name": "Rsync",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "complex256",
-  "api": 7,
+  "api": 9,
   "main": "sample.rsyncstatus.RsyncStatusPlugin",
   "permissions": [
     "network",

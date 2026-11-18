@@ -1,17 +1,17 @@
 package sample.inputsdemo;
 
-import mibsdk.api.Icon;
 import mibsdk.api.Listener;
 import mibsdk.api.Log;
 import mibsdk.api.MibPlugin;
-import mibsdk.api.Page;
-import mibsdk.api.PageSpec;
 import mibsdk.api.PluginContext;
 import mibsdk.api.Scheduler;
-import mibsdk.api.StockIcons;
 import mibsdk.api.Storage;
-import mibsdk.api.Ui;
-import mibsdk.api.UiAction;
+import mibsdk.api.ui.Icon;
+import mibsdk.api.ui.Page;
+import mibsdk.api.ui.PageSpec;
+import mibsdk.api.ui.StockIcons;
+import mibsdk.api.ui.Ui;
+import mibsdk.api.ui.UiAction;
 
 /**
  * Sample api-5 plugin: one page, "Inputs", with every native input. It has no Car row: open it from MENU, Plugins.
@@ -29,7 +29,7 @@ import mibsdk.api.UiAction;
  * The last line shows the last action. Every action is logged at INFO. The name, the level and both slider levels
  * are kept in storage ({@code name}, {@code level}, {@code bass}, {@code vol}). The manifest declares
  * {@code ui.slot.statusbar}, which toasts need, and the 24-px item icon {@code plug-24}. Toasts show the built-in plug
- * (status icons are at most 20 px, so plug-24 cannot be a toast icon).
+ * (the built-in glyph is the stock one; plug-24 is sized for page items, whose cell does not scale).
  */
 public class InputsDemoPlugin extends MibPlugin {
 
@@ -165,7 +165,7 @@ public class InputsDemoPlugin extends MibPlugin {
         }
         s = s.toggle("locked", "Locked", false).enabled("locked", false)
                 .choice("lang", "Language", LANGUAGES, lang)
-                .item("ver", "Version", "1.0.3")
+                .item("ver", "Version", "1.0.4")
                 .item("plug", "Plug", null, plug)
                 .item("plugv", "Plug value", "on", plug)
                 .progress("prog", "Progress", progress)

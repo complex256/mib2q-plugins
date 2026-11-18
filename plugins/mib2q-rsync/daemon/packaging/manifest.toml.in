@@ -35,6 +35,6 @@ after_timeout = "5m"
 [plugin]
 id = "rsync-status"
 jar = "rsync-status.jar"
-api = 7
+api = 9
 permissions = ["network", "network.wifi", "vehicle.read", "ui.slot.carmenu", "ui.slot.statusbar"]
 icons = ["rsync-on", "rsync-off"]

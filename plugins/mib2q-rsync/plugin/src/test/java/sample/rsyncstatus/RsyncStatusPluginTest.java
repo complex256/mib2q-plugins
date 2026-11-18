@@ -204,15 +204,15 @@ class RsyncStatusPluginTest {
         return m;
     }
 
-    private static List<String> lines(mibsdk.api.PageSpec spec) {
+    private static List<String> lines(mibsdk.api.ui.PageSpec spec) {
         List<String> out = new ArrayList<String>();
-        for (mibsdk.api.PageSpec.Entry e : spec.entries()) {
-            out.add(e.kind() == mibsdk.api.PageSpec.Kind.INFO ? e.label() : line(e));
+        for (mibsdk.api.ui.PageSpec.Entry e : spec.entries()) {
+            out.add(e.kind() == mibsdk.api.ui.PageSpec.Kind.INFO ? e.label() : line(e));
         }
         return out;
     }
 
-    private static String line(mibsdk.api.PageSpec.Entry e) {
+    private static String line(mibsdk.api.ui.PageSpec.Entry e) {
         String value = e.value();
         return value == null || value.length() == 0 ? e.label() : e.label() + ": " + value;
     }

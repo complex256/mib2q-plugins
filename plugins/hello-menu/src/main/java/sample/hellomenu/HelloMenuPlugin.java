@@ -1,24 +1,24 @@
 package sample.hellomenu;
 
-import mibsdk.api.HmiContext;
-import mibsdk.api.Icon;
 import mibsdk.api.MibPlugin;
-import mibsdk.api.Page;
-import mibsdk.api.PageSpec;
 import mibsdk.api.PluginContext;
-import mibsdk.api.StatusItem;
-import mibsdk.api.StockIcons;
 import mibsdk.api.Storage;
 import mibsdk.api.Subscription;
-import mibsdk.api.Ui;
-import mibsdk.api.UiAction;
-import mibsdk.api.UiColor;
+import mibsdk.api.ui.HmiContext;
+import mibsdk.api.ui.Icon;
+import mibsdk.api.ui.Page;
+import mibsdk.api.ui.PageSpec;
+import mibsdk.api.ui.StatusItem;
+import mibsdk.api.ui.StockIcons;
+import mibsdk.api.ui.Ui;
+import mibsdk.api.ui.UiAction;
+import mibsdk.api.ui.UiColor;
 
 /**
  * Sample UI plugin: a fruit list page, reachable from the Plugins menu and, when the unit has the slot, the Car menu.
- * The manifest declares {@code ui.slot.carmenu} and {@code ui.slot.statusbar} (the status item), and the icons {@code hello} (72x72) and {@code hello-20} (20x20).
+ * The manifest declares {@code ui.slot.carmenu} and {@code ui.slot.statusbar} (the status item), and the icons {@code hello} (72x72) and {@code hello-30} (30x30).
  * "Next icon" swaps the Car row's icon between {@code hello} and a stock star (it shows when the Car screen next opens);
- * "Next status icon" cycles the status item's icon hello-20, star, dot. The status item draws hello-20 in its own colours
+ * "Next status icon" cycles the status item's icon hello-30, star, dot. The status item draws hello-30 in its own colours
  * (half white, half blue; api 4) by default, and "Status icon colour" flips it to tinted and back; the stock icons stay
  * tinted. "Status text colour" (api 6) sets a fixed cyan in every context, or back to the bar's own; "Status item in
  * Car" limits the item to {@link HmiContext#CAR} (api 6). Permissions are all-or-nothing, so a running plugin holds it.
@@ -102,7 +102,7 @@ public class HelloMenuPlugin extends MibPlugin {
     }
 
     private Icon statusIcon(int n) {
-        return n == 0 ? ui.icon("hello-20", statusColour) : ui.stockIcon(n == 1 ? StockIcons.STAR : StockIcons.DOT);
+        return n == 0 ? ui.icon("hello-30", statusColour) : ui.stockIcon(n == 1 ? StockIcons.STAR : StockIcons.DOT);
     }
 
     private static PageSpec spec(String last) {
